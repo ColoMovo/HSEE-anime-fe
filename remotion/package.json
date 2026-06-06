@@ -1,0 +1,20 @@
+{
+  "name": "hsee-anime-remotion",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "preview": "remotion preview Root.tsx",
+    "render": "remotion render Root.tsx gaokao-video --output=../out.mp4 --concurrency=8 --gl=angle"
+  },
+  "dependencies": {
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "remotion": "4.0.150"
+  },
+  "devDependencies": {
+    "@remotion/cli": "4.0.150",
+    "@types/react": "18.3.3",
+    "@types/react-dom": "18.3.0",
+    "typescript": "5.4.5"
+  }
+}

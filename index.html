@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>&#x8f7b;&#x821f;&#x5df2;&#x8fc7;&#x4e07;&#x91cd;&#x5c71;&#xff5c;&#x9ad8;&#x8003;&#x52a0;&#x6cb9;&#x89c6;&#x9891;</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=ZCOOL+XiaoWei&family=Noto+Serif+SC:wght@400;700&display=swap"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app">
+      <section class="stage-shell" aria-label="gaokao video player">
+        <canvas id="heroCanvas" width="1920" height="1080"></canvas>
+        <div class="tap-layer" id="tapLayer">
+          <button class="start-button" id="startButton" type="button">&#x64ad;&#x653e;</button>
+        </div>
+      </section>
+
+      <section class="control-bar" aria-label="video controls">
+        <button id="playButton" type="button">&#x64ad;&#x653e;</button>
+        <button id="restartButton" type="button">&#x91cd;&#x64ad;</button>
+        <button id="recordButton" type="button">&#x5f55;&#x5236;</button>
+        <button id="fullscreenButton" type="button">&#x5168;&#x5c4f;</button>
+        <div class="timeline" aria-label="progress">
+          <span id="currentTime">00:00</span>
+          <input id="seekBar" type="range" min="0" max="1000" value="0" />
+          <span id="durationTime">--:--</span>
+        </div>
+      </section>
+
+      <audio id="bgm" preload="auto" src="./Last%20Hope%20-%20Victor%20Cooper.flac"></audio>
+    </main>
+
+    <script src="./script.js"></script>
+  </body>
+</html>

@@ -1,0 +1,10 @@
+{
+  "name": "hsee-anime-fe",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server.mjs",
+    "render": "C:\\Users\\Administrator\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe render-video.mjs"
+  }
+}

@@ -1,0 +1,207 @@
+:root {
+  color-scheme: dark;
+  font-family:
+    "Ma Shan Zheng",
+    "ZCOOL XiaoWei",
+    "Noto Serif SC",
+    "STKaiti",
+    "KaiTi",
+    "FangSong",
+    "STFangSong",
+    "STSong",
+    "SimSun",
+    serif;
+  background: #050505;
+  color: #e8e3d6;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  overflow-x: hidden;
+  background:
+    radial-gradient(circle at 18% 14%, rgba(255, 255, 255, 0.045), transparent 38%),
+    radial-gradient(circle at 82% 86%, rgba(255, 255, 255, 0.03), transparent 42%),
+    #050505;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+.app {
+  width: min(100%, 1720px);
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 16px;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: 12px;
+}
+
+.stage-shell {
+  position: relative;
+  min-height: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid rgba(197, 160, 89, 0.22);
+  border-radius: 8px;
+  background: #000;
+  box-shadow:
+    0 24px 80px rgba(0, 0, 0, 0.85),
+    0 0 40px rgba(197, 160, 89, 0.04),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+}
+
+#heroCanvas {
+  width: 100%;
+  max-height: calc(100vh - 104px);
+  aspect-ratio: 16 / 9;
+  display: block;
+  background: #000;
+}
+
+.tap-layer {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(circle at center, rgba(255, 255, 255, 0.06), transparent 30%),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.18), rgba(0, 0, 0, 0.78));
+  transition: opacity 220ms ease, visibility 220ms ease;
+}
+
+.tap-layer.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.start-button {
+  width: 104px;
+  height: 104px;
+  border: 1px solid rgba(255, 255, 255, 0.78);
+  border-radius: 50%;
+  color: #f5efe0;
+  background: rgba(8, 8, 8, 0.62);
+  box-shadow:
+    0 0 0 10px rgba(255, 255, 255, 0.06),
+    0 22px 50px rgba(0, 0, 0, 0.6);
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.start-button:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: #ffffff;
+}
+
+.control-bar {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(76px, auto)) minmax(220px, 1fr);
+  gap: 10px;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid rgba(197, 160, 89, 0.22);
+  border-radius: 8px;
+  background: rgba(10, 10, 10, 0.82);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.control-bar button {
+  height: 42px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 6px;
+  color: #e8e3d6;
+  background: rgba(255, 255, 255, 0.03);
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 200ms ease;
+}
+
+.control-bar button:hover {
+  border-color: rgba(197, 160, 89, 0.75);
+  background: rgba(197, 160, 89, 0.08);
+  color: #f6f0e0;
+}
+
+.timeline {
+  display: grid;
+  grid-template-columns: 52px minmax(120px, 1fr) 52px;
+  gap: 10px;
+  align-items: center;
+  color: rgba(240, 234, 216, 0.72);
+  font-variant-numeric: tabular-nums;
+}
+
+.timeline span {
+  min-width: 0;
+  text-align: center;
+}
+
+#seekBar {
+  width: 100%;
+  accent-color: #ffffff;
+}
+
+@media (max-width: 760px) {
+  .app {
+    padding: 10px;
+  }
+
+  #heroCanvas {
+    max-height: calc(100vh - 188px);
+  }
+
+  .control-bar {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .timeline {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Remotion mode: hide controls and go full screen */
+body.remotion-mode {
+  background: #000;
+  overflow: hidden;
+}
+body.remotion-mode .control-bar {
+  display: none !important;
+}
+body.remotion-mode .tap-layer {
+  display: none !important;
+}
+body.remotion-mode .app {
+  padding: 0 !important;
+  margin: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  max-width: none !important;
+  min-height: 100vh !important;
+  display: block !important;
+}
+body.remotion-mode .stage-shell {
+  width: 100vw !important;
+  height: 100vh !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  background: #000;
+}
+body.remotion-mode #heroCanvas {
+  width: 100vw !important;
+  height: 100vh !important;
+  max-height: none !important;
+  object-fit: contain !important;
+}
+
