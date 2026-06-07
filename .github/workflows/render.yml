@@ -13,23 +13,20 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Setup FFmpeg
+        uses: FedericoCarboni/setup-ffmpeg@v3
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
-
-      - name: Install system dependencies for Headless Chrome
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y ffmpeg libnss3 libatk1.0-0 libatk-bridge2.0-0 libcups2 libdrm2 libxkbcommon0 libxcomposite1 libxdamage1 libxfixes3 libxrandr2 libgbm1 libasound2
-
-      - name: Install local root dependencies
-        run: npm install
+          cache: 'yarn'
+          cache-dependency-path: remotion/yarn.lock
 
       - name: Install Remotion dependencies
         run: |
           cd remotion
-          npm install
+          yarn install --frozen-lockfile
 
       - name: Start preview server in background
         run: |
