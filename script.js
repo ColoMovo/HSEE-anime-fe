@@ -391,7 +391,7 @@ function drawMountainLayer(layer, t, progress, index, globalStrength) {
   // 模拟镜头景深效果 (DoF) - 焦平面设在 0.5 深度处，两侧深度逐渐模糊
   const focusPlane = 0.5;
   const blurRad = Math.abs(depth - focusPlane) * 6.5;
-  if (blurRad > 0.6) {
+  if (blurRad > 0.6 && !window.isRemotion) {
     ctx.filter = `blur(${blurRad.toFixed(1)}px)`;
   } else {
     ctx.filter = "none";
@@ -493,7 +493,7 @@ function drawBgChars(t) {
     ctx.scale(c.scale, c.scale);
     ctx.globalAlpha = c.opacity;
     
-    if (blur > 0.6) {
+    if (blur > 0.6 && !window.isRemotion) {
       ctx.filter = `blur(${blur.toFixed(1)}px)`;
     } else {
       ctx.filter = "none";
@@ -577,7 +577,11 @@ function drawForeground(t, progress) {
   const offset = -progress * 60;
   ctx.save();
   // 模拟前景近景景深模糊 (Foreground DoF)
-  ctx.filter = "blur(9.0px)";
+  if (!window.isRemotion) {
+    ctx.filter = "blur(9.0px)";
+  } else {
+    ctx.filter = "none";
+  }
   for (const f of foreground) {
     const x = (f.x + offset * f.speed * 12) % (W * 1.5) - 100;
     const sway = Math.sin(t * 1.3 + f.phase) * 4;
@@ -771,7 +775,7 @@ function drawInkCard(card, t, sceneIdx, energy) {
   // 模拟镜头景深效果 (DoF) - 焦平面设在 0.7 深度处，偏离则模糊
   const cardFocus = 0.7;
   const cBlur = Math.abs(card.depth - cardFocus) * 9.5;
-  if (cBlur > 0.6) {
+  if (cBlur > 0.6 && !window.isRemotion) {
     ctx.filter = `blur(${cBlur.toFixed(1)}px)`;
   } else {
     ctx.filter = "none";
@@ -1218,7 +1222,7 @@ function drawMotes(t, energy) {
   for (const p of motes) {
     const x = (p.x + t * 48 * p.speed) % (W + 140) - 70;
     const y = p.y + Math.sin(t * p.speed + p.x) * 24;
-    ctx.filter = p.layer === 1 ? "blur(4.0px)" : "blur(1.2px)";
+    ctx.filter = window.isRemotion ? "none" : (p.layer === 1 ? "blur(4.0px)" : "blur(1.2px)");
     ctx.globalAlpha = p.alpha + energy * 0.22;
     ctx.fillStyle = "#ffffff";
     ctx.beginPath();
@@ -1420,7 +1424,7 @@ function drawExamPapers() {
     const pBlur = Math.abs(depth - focusPlane) * 7.0;
     
     ctx.save();
-    if (pBlur > 0.6) {
+    if (pBlur > 0.6 && !window.isRemotion) {
       ctx.filter = `blur(${pBlur.toFixed(1)}px)`;
     } else {
       ctx.filter = "none";
@@ -1544,7 +1548,7 @@ function drawLanterns() {
     const lBlur = Math.abs(depth - focusPlane) * 8.0;
     
     ctx.save();
-    if (lBlur > 0.6) {
+    if (lBlur > 0.6 && !window.isRemotion) {
       ctx.filter = `blur(${lBlur.toFixed(1)}px)`;
     } else {
       ctx.filter = "none";

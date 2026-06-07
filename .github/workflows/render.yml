@@ -36,7 +36,7 @@ jobs:
       - name: Render Video with Remotion
         run: |
           cd remotion
-          node node_modules/@remotion/cli/remotion-cli.js render Root.tsx gaokao-video --output=../out.mp4 --concurrency=4
+          node node_modules/@remotion/cli/remotion-cli.js render Root.tsx gaokao-video --output=../out.mp4 --concurrency=2
 
       - name: Upload Video Artifact
         uses: actions/upload-artifact@v4
