@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>水墨风视频封面生成器 | 轻舟已过万重山</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=ZCOOL+XiaoWei&family=Noto+Serif+SC:wght@400;700&family=Outfit:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg-color: #0b0c10;
+        --card-bg: rgba(255, 255, 255, 0.03);
+        --card-border: rgba(255, 255, 255, 0.08);
+        --accent-color: #c5a059;
+        --accent-hover: #e0b460;
+        --text-color: #f3ece0;
+        --text-muted: #8b8f9a;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        font-family: 'Outfit', 'Noto Serif SC', -apple-system, BlinkMacSystemFont, sans-serif;
+        min-height: 100/vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 2rem 1rem;
+        overflow-x: hidden;
+      }
+
+      header {
+        text-align: center;
+        margin-bottom: 2.5rem;
+        max-width: 800px;
+      }
+
+      h1 {
+        font-family: 'ZCOOL XiaoWei', serif;
+        font-size: 2.5rem;
+        font-weight: 400;
+        letter-spacing: 2px;
+        color: var(--accent-color);
+        margin-bottom: 0.5rem;
+        text-shadow: 0 0 20px rgba(197, 160, 89, 0.25);
+      }
+
+      header p {
+        font-size: 1rem;
+        color: var(--text-muted);
+        line-height: 1.6;
+      }
+
+      .container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 3rem;
+        width: 100%;
+        max-width: 1200px;
+        margin-bottom: 3rem;
+      }
+
+      .cover-card {
+        background: var(--card-bg);
+        border: 1px solid var(--card-border);
+        border-radius: 16px;
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        backdrop-filter: blur(12px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        transition: transform 0.3s ease, border-color 0.3s ease;
+        width: 100%;
+        max-width: 480px;
+      }
+
+      .cover-card:hover {
+        transform: translateY(-5px);
+        border-color: rgba(197, 160, 89, 0.3);
+      }
+
+      .cover-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: 0.25rem;
+        color: var(--text-color);
+      }
+
+      .cover-subtitle {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        margin-bottom: 1.25rem;
+      }
+
+      .canvas-wrapper {
+        background: #111;
+        border-radius: 8px;
+        overflow: hidden;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+      }
+
+      /* Scale down canvas display while preserving high resolution */
+      canvas {
+        max-width: 100%;
+        height: auto;
+        display: block;
+      }
+
+      .btn {
+        background-color: var(--accent-color);
+        color: #0d0d0d;
+        border: none;
+        border-radius: 30px;
+        padding: 0.85rem 2rem;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.2s ease, transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        width: 100%;
+        justify-content: center;
+        text-decoration: none;
+        box-shadow: 0 4px 15px rgba(197, 160, 89, 0.2);
+      }
+
+      .btn:hover {
+        background-color: var(--accent-hover);
+        transform: scale(1.02);
+      }
+
+      .btn:active {
+        transform: scale(0.98);
+      }
+
+      footer {
+        text-align: center;
+        margin-top: auto;
+        color: var(--text-muted);
+        font-size: 0.85rem;
+      }
+
+      footer a {
+        color: var(--accent-color);
+        text-decoration: none;
+      }
+
+      footer a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>写意水墨风 · 视频封面生成器</h1>
+      <p>自动载入《轻舟已过万重山》视觉素材，渲染高分辨率的横/竖版封面，可一键下载 PNG 图档用于抖音上传。</p>
+    </header>
+
+    <div class="container">
+      <!-- 4:3 横版封面 -->
+      <div class="cover-card">
+        <div class="cover-title">横版封面 (4:3)</div>
+        <div class="cover-subtitle">分辨率: 1200 x 900 像素</div>
+        <div class="canvas-wrapper" style="aspect-ratio: 4/3;">
+          <canvas id="landscapeCanvas" width="1200" height="900"></canvas>
+        </div>
+        <button class="btn" onclick="downloadCover('landscapeCanvas', 'landscape-cover.png')">
+          📥 下载横版封面 (4:3)
+        </button>
+      </div>
+
+      <!-- 3:4 竖版封面 -->
+      <div class="cover-card">
+        <div class="cover-title">竖版封面 (3:4)</div>
+        <div class="cover-subtitle">分辨率: 900 x 1200 像素</div>
+        <div class="canvas-wrapper" style="aspect-ratio: 3/4;">
+          <canvas id="portraitCanvas" width="900" height="1200"></canvas>
+        </div>
+        <button class="btn" onclick="downloadCover('portraitCanvas', 'portrait-cover.png')">
+          📥 下载竖版封面 (3:4)
+        </button>
+      </div>
+    </div>
+
+    <footer>
+      由 AI 助手生成 | 代码基于 Remotion 水墨动画视觉元素构建
+    </footer>
+
+    <script>
+      const colors = {
+        bgStart: "#f6f2e8",
+        bgEnd: "#e7decb",
+        glow: "rgba(224, 160, 60, 0.22)",
+        mountain1: "rgba(20, 20, 20, 0.88)",
+        mountain2: "rgba(42, 42, 42, 0.65)",
+        mountain3: "rgba(75, 75, 75, 0.45)",
+        textMain: "#1a1a1a",
+        sealRed: "rgba(202, 53, 43, 0.94)"
+      };
+
+      // Draw standard mountain path
+      function drawMountainPath(ctx, startX, startY, width, height, seed) {
+        ctx.beginPath();
+        ctx.moveTo(startX, startY + height);
+        
+        const segments = 20;
+        ctx.lineTo(startX, startY);
+        
+        for (let i = 1; i <= segments; i++) {
+          const ratio = i / segments;
+          const x = startX + ratio * width;
+          const noise = Math.sin(ratio * Math.PI * 2 + seed) * 15 + Math.cos(ratio * Math.PI * 4 + seed * 2.3) * 8;
+          const y = startY - Math.sin(ratio * Math.PI) * height * 0.7 + noise;
+          ctx.lineTo(x, y);
+        }
+        ctx.lineTo(startX + width, startY + height);
+        ctx.closePath();
+        ctx.fill();
+      }
+
+      // Draw boat silhouette
+      function drawBoat(ctx, x, y, scale) {
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.scale(scale, scale);
+        ctx.fillStyle = "rgba(0,0,0,0.85)";
+
+        // Hull (船身)
+        ctx.beginPath();
+        ctx.moveTo(-40, 5);
+        ctx.quadraticCurveTo(-20, 20, 25, 15);
+        ctx.quadraticCurveTo(40, 12, 50, 2);
+        ctx.quadraticCurveTo(10, 8, -40, 5);
+        ctx.fill();
+
+        // Mast & Sail (船帆)
+        ctx.fillStyle = "rgba(40,40,40,0.85)";
+        ctx.beginPath();
+        ctx.moveTo(-10, 3);
+        ctx.lineTo(10, -38);
+        ctx.lineTo(24, 2);
+        ctx.closePath();
+        ctx.fill();
+
+        // Mast line
+        ctx.strokeStyle = "rgba(0,0,0,0.9)";
+        ctx.lineWidth = 1.8;
+        ctx.beginPath();
+        ctx.moveTo(10, -38);
+        ctx.lineTo(10, 5);
+        ctx.stroke();
+
+        ctx.restore();
+      }
+
+      // Draw seal (前程万里印章)
+      function drawSeal(ctx, x, y, size) {
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(-0.06);
+
+        // Border
+        ctx.strokeStyle = colors.sealRed;
+        ctx.lineWidth = size * 0.05;
+        ctx.strokeRect(-size/2, -size/2, size, size);
+
+        // Text
+        ctx.fillStyle = colors.sealRed;
+        ctx.font = `bold ${Math.round(size * 0.26)}px "Ma Shan Zheng", "STKaiti", "KaiTi", serif`;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText("前程", 0, -size * 0.16);
+        ctx.fillText("万里", 0, size * 0.22);
+
+        ctx.restore();
+      }
+
+      // Render Landscape Cover
+      function renderLandscape() {
+        const canvas = document.getElementById("landscapeCanvas");
+        const ctx = canvas.getContext("2d");
+        const W = canvas.width;
+        const H = canvas.height;
+
+        // 1. Background Gradient
+        const bg = ctx.createLinearGradient(0, 0, 0, H);
+        bg.addColorStop(0, colors.bgStart);
+        bg.addColorStop(1, colors.bgEnd);
+        ctx.fillStyle = bg;
+        ctx.fillRect(0, 0, W, H);
+
+        // 2. Sunrise Golden Glow
+        const glow = ctx.createRadialGradient(W * 0.5, H * 0.45, 50, W * 0.5, H * 0.45, 450);
+        glow.addColorStop(0, colors.glow);
+        glow.addColorStop(1, "rgba(224, 160, 60, 0)");
+        ctx.fillStyle = glow;
+        ctx.beginPath();
+        ctx.arc(W * 0.5, H * 0.45, 450, 0, Math.PI * 2);
+        ctx.fill();
+
+        // 3. Distant Mountains (Back Layer)
+        ctx.fillStyle = colors.mountain3;
+        drawMountainPath(ctx, -100, H * 0.65, W + 200, 180, 5.5);
+
+        // 4. Midground Mountains (Middle Layer)
+        ctx.fillStyle = colors.mountain2;
+        drawMountainPath(ctx, -50, H * 0.72, W + 100, 160, 1.2);
+
+        // 5. Foreground Mountains (Front Layer)
+        ctx.fillStyle = colors.mountain1;
+        drawMountainPath(ctx, -100, H * 0.8, W + 200, 120, 8.8);
+
+        // 6. Draw Sailing Boat
+        drawBoat(ctx, W * 0.68, H * 0.72, 1.3);
+
+        // 7. Write Calligraphy Main Title (Horizontal)
+        ctx.fillStyle = colors.textMain;
+        ctx.font = 'bold 125px "Ma Shan Zheng", "STKaiti", "KaiTi", serif';
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        
+        // Shadow for premium pop
+        ctx.shadowColor = "rgba(197, 160, 89, 0.45)";
+        ctx.shadowBlur = 24;
+        
+        ctx.fillText("轻舟已过万重山", W / 2, H * 0.3);
+        ctx.shadowBlur = 0; // Reset shadow
+
+        // 8. Subtitle / Slogan
+        ctx.font = '400 48px "ZCOOL XiaoWei", "STKaiti", "KaiTi", serif';
+        ctx.fillStyle = "rgba(30, 30, 30, 0.8)";
+        ctx.fillText("— 高 考 加 油 · 前 程 似 锦 —", W / 2, H * 0.46);
+
+        // 9. Stamp
+        drawSeal(ctx, W * 0.82, H * 0.42, 90);
+      }
+
+      // Render Portrait Cover
+      function renderPortrait() {
+        const canvas = document.getElementById("portraitCanvas");
+        const ctx = canvas.getContext("2d");
+        const W = canvas.width;
+        const H = canvas.height;
+
+        // 1. Background Gradient
+        const bg = ctx.createLinearGradient(0, 0, 0, H);
+        bg.addColorStop(0, colors.bgStart);
+        bg.addColorStop(1, colors.bgEnd);
+        ctx.fillStyle = bg;
+        ctx.fillRect(0, 0, W, H);
+
+        // 2. Sunrise Golden Glow
+        const glow = ctx.createRadialGradient(W * 0.5, H * 0.55, 40, W * 0.5, H * 0.55, 380);
+        glow.addColorStop(0, colors.glow);
+        glow.addColorStop(1, "rgba(224, 160, 60, 0)");
+        ctx.fillStyle = glow;
+        ctx.beginPath();
+        ctx.arc(W * 0.5, H * 0.55, 380, 0, Math.PI * 2);
+        ctx.fill();
+
+        // 3. Distant Mountains (Back Layer)
+        ctx.fillStyle = colors.mountain3;
+        drawMountainPath(ctx, -100, H * 0.7, W + 200, 160, 6.2);
+
+        // 4. Midground Mountains (Middle Layer)
+        ctx.fillStyle = colors.mountain2;
+        drawMountainPath(ctx, -50, H * 0.76, W + 100, 140, 2.5);
+
+        // 5. Foreground Mountains (Front Layer)
+        ctx.fillStyle = colors.mountain1;
+        drawMountainPath(ctx, -100, H * 0.82, W + 200, 110, 9.4);
+
+        // 6. Draw Sailing Boat
+        drawBoat(ctx, W * 0.64, H * 0.77, 1.1);
+
+        // 7. Write Calligraphy Main Title (Vertical - typical Chinese painting layout)
+        ctx.fillStyle = colors.textMain;
+        ctx.font = 'bold 110px "Ma Shan Zheng", "STKaiti", "KaiTi", serif';
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        
+        ctx.shadowColor = "rgba(197, 160, 89, 0.4)";
+        ctx.shadowBlur = 20;
+
+        const titleText = "轻舟已过万重山";
+        const charSpacing = 120;
+        const startY = H * 0.14;
+        for (let i = 0; i < titleText.length; i++) {
+          ctx.fillText(titleText[i], W / 2, startY + i * charSpacing);
+        }
+        ctx.shadowBlur = 0;
+
+        // 8. Vertical Subtitle on the side
+        ctx.font = '400 36px "ZCOOL XiaoWei", "STKaiti", "KaiTi", serif';
+        ctx.fillStyle = "rgba(40, 40, 40, 0.75)";
+        
+        const subText = "金榜题名 · 前程万里";
+        ctx.font = '400 32px "ZCOOL XiaoWei", "STKaiti", serif';
+        const subSpacing = 44;
+        const subStartY = H * 0.25;
+        for (let i = 0; i < subText.length; i++) {
+          ctx.fillText(subText[i], W / 2 - 140, subStartY + i * subSpacing);
+        }
+
+        // 9. Stamp
+        drawSeal(ctx, W / 2 - 140, subStartY + subText.length * subSpacing + 50, 76);
+      }
+
+      // Download Canvas as PNG image
+      function downloadCover(canvasId, filename) {
+        const canvas = document.getElementById(canvasId);
+        const url = canvas.toDataURL("image/png");
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = filename;
+        a.click();
+      }
+
+      // Wait for Google Fonts to load before rendering to canvas
+      window.onload = function() {
+        if (document.fonts && document.fonts.ready) {
+          document.fonts.ready.then(() => {
+            renderLandscape();
+            renderPortrait();
+            console.log("Fonts loaded and covers rendered successfully!");
+          });
+        } else {
+          setTimeout(() => {
+            renderLandscape();
+            renderPortrait();
+          }, 1500);
+        }
+      };
+    </script>
+  </body>
+</html>
